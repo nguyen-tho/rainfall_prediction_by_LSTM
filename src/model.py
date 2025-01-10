@@ -51,6 +51,9 @@ def model_fit(model, training_data, epochs, batch_size, callback, validation_dat
 def save_model(model, save_path):
     model.save(save_path)
     
-def load_model(model_dir):
+def loadModel(model_dir):
     model = load_model(model_dir)
     return model
+
+def model_predict(model, X_test):
+    return model.predict(X_test)
