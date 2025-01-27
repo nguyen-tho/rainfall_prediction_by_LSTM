@@ -3,24 +3,25 @@ from tensorflow.python.keras.layers import LSTM, Dense, Dropout
 import tensorflow as tf
 from tensorflow.python.keras.models import load_model
 import tensorflow.python.keras.backend as K
+from tensorflow.python.keras import callbacks
 
 def precision(y_true, y_pred):
     y_true = tf.cast(y_true, tf.float32)  # Cast y_true to float32
     true_positives = tf.reduce_sum(tf.round(tf.clip_by_value(y_true * y_pred, 0, 1)))
     predicted_positives = tf.reduce_sum(tf.round(tf.clip_by_value(y_pred, 0, 1)))
-    return true_positives / (predicted_positives + tf.keras.backend.epsilon())
+    return true_positives / (predicted_positives + K.epsilon())
 
 def recall(y_true, y_pred):
     y_true = tf.cast(y_true, tf.float32)  # Cast y_true to float32
     true_positives = tf.reduce_sum(tf.round(tf.clip_by_value(y_true * y_pred, 0, 1)))
     possible_positives = tf.reduce_sum(tf.round(tf.clip_by_value(y_true, 0, 1)))
-    return true_positives / (possible_positives + tf.keras.backend.epsilon())
+    return true_positives / (possible_positives + K.epsilon())
 
 def f1_score(y_true, y_pred):
     y_true = tf.cast(y_true, tf.float32)  # Cast y_true to float32
     prec = precision(y_true, y_pred)
     rec = recall(y_true, y_pred)
-    return 2 * ((prec * rec) / (prec + rec + tf.keras.backend.epsilon()))
+    return 2 * ((prec * rec) / (prec + rec + K.epsilon()))
 
 def create_model(input_shape, y_encoded):
     model = Sequential([
@@ -57,3 +58,28 @@ def loadModel(model_dir):
 
 def model_predict(model, X_test):
     return model.predict(X_test)
+
+def callback(type='reduce_lr', logging=True, monitor='val_loss'):
+    # create callback variable to store type of callback and logging if available
+    callback = []
+    # choose type of callback
+    if type == 'reduce_lr':
+        patience = 10
+        min_lr = 1e-15
+        factor = 0.5
+        reduce_lr = callbacks.ReduceLROnPlateau(monitor=monitor, patience = patience, factor=factor, min_lr=min_lr)
+        callback.append(reduce_lr)
+    elif type == 'early_stopping':
+        patience = 10
+        restore_best_weight = True
+        early_stopping = callbacks.EarlyStopping(monitor=monitor, patience=patience, restore_best_weights=restore_best_weight)
+        callback.append(early_stopping)
+    
+    
+    # choose logging available
+    file_name = '../logging/training_log.csv' #logging file
+    if logging:
+        csv_logger = callbacks.CSVLogger(filename=file_name)
+        callback.append(csv_logger)
+    return callback
+    
