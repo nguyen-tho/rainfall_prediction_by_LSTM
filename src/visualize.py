@@ -1,5 +1,6 @@
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import seaborn as sns
 
 def pie_plot(data_col, autopct='%1.1f%%'):
     data_values = data_col.value_counts().values
@@ -26,6 +27,19 @@ def scatter_3D_plot(data, group, col1, col2, col3, title):
     ax.legend()
     
     plt.show()
+    
+
+def show_correlation_matrix(data):
+    corr_maxtrix = data.corr()
+    
+    plt.figure(10,10)
+    plt.title("Correlation Matrix")
+    sns.heatmap(corr_maxtrix, annot=True, cmap='coolwarm', square=True)
+    plt.xticks(rotation=45)
+    plt.yticks(rotation=45)
+    
+    plt.show()
+    
     
     
     
