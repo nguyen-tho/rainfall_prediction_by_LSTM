@@ -59,26 +59,49 @@ def loadModel(model_dir):
 def model_predict(model, X_test):
     return model.predict(X_test)
 
-def callback(type='reduce_lr', logging=True, monitor='val_loss'):
+def callback(type='reduce_lr', logging=True, monitor='val_loss', logging_dir= 'logging/training_log.csv'):
     # create callback variable to store type of callback and logging if available
     callback = []
+    print("Choose your callback type: ")
+    print("1. Reduce LR on Plateau (Default)")
+    print("2. Early Stopping")
+    print("=========================================================")
+    type = input("Enter your choice: ")
     # choose type of callback
-    if type == 'reduce_lr':
-        patience = 10
-        min_lr = 1e-15
-        factor = 0.5
+    if type == 'reduce_lr' or type == 1:
+        print("You have chosen Reduce LR on Plateau")
+        print("Set your parameter")
+        patience = int(input("Enter patience: "))
+        min_lr = float(input("Enter your min learing rate: "))
+        factor = float(input("Enter your factor: "))
+        print(f"You have chosen ReduceLROnPlateau(monitor={monitor}, patience={patience}, factor={factor}, min_lr={min_lr})")
         reduce_lr = callbacks.ReduceLROnPlateau(monitor=monitor, patience = patience, factor=factor, min_lr=min_lr)
         callback.append(reduce_lr)
-    elif type == 'early_stopping':
-        patience = 10
-        restore_best_weight = True
-        early_stopping = callbacks.EarlyStopping(monitor=monitor, patience=patience, restore_best_weights=restore_best_weight)
+    elif type == 'early_stopping' or type == 2:
+        print("You have chosen Early Stopping")
+        print("Set your parameter")
+        patience = int(input("Enter patience: "))
+        print("Do you want restore best weight: ")
+        print("1. Yes")
+        print("2. No")
+        restore_best_weight = input("Restore best weights: ").lower().strip()
+        if restore_best_weight == 'yes' or restore_best_weight == 'true' or restore_best_weight == 1:
+            restore_best_weights = True
+        else:
+            restore_best_weights = False
+        print(f"You have chosen ReduceLROnPlateau(monitor={monitor}, patience={patience}, restore_best_weights={restore_best_weights})")
+        early_stopping = callbacks.EarlyStopping(monitor=monitor, patience=patience, restore_best_weights=restore_best_weights)
         callback.append(early_stopping)
-    
+    else: 
+        print("Invalid type!!")
     
     # choose logging available
-    file_name = '../logging/training_log.csv' #logging file
-    if logging:
+    file_name = logging_dir #logging file
+    print("Do you want to save log: ")
+    print("1. Yes (Default)")
+    print("2. No")
+    logging = input("Logging: ").lower().strip()
+    if logging == 'yes' or logging == 'true' or logging == '1':
         csv_logger = callbacks.CSVLogger(filename=file_name)
         callback.append(csv_logger)
     return callback
