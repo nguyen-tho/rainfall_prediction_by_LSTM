@@ -1,5 +1,5 @@
 import read_data as r
-from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
+from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, OrdinalEncoder
 from imblearn.over_sampling import SMOTE
 from collections import Counter
 import numpy as np
@@ -58,13 +58,46 @@ def data_normalization(X):
     
     return X
 
+
+# Ordinal encoder use for encoding target label y into a numeric value:
+# for example
+# không mưa: 0
+# mưa không đáng kể: 1
+# mưa nhỏ: 2
+# mưa: 3
+# mưa vừa: 4
+# mưa to: 5
+# mưa rất to: 6
+def ordinal_encoding(y):
+    #ordinal encoding for target y
+    encoder = OrdinalEncoder()
+    y_encoded = encoder.fit_transform(y.reshape(-1, 1))
+    # ordinal encoder not need to change into nparray
+    
+    return y_encoded
+
+# encode each label into specific vectors such as 
+# class 0   1   2   3   4   5   6   
+# 0     1   0   0   0   0   0   0
+# 1     0   1   0   0   0   0   0
+# 2     0   0   1   0   0   0   0
+# 3     0   0   0   1   0   0   0
+# 4     0   0   0   0   1   0   0
+# 5     0   0   0   0   0   1   0
+# 6     0   0   0   0   0   0   1
 def target_encoding(y):
     #one-hot encoding for target y
     encoder = OneHotEncoder()
     y_encoded = encoder.fit_transform(y.reshape(-1, 1))
     y_encoded = y_encoded.toarray()
     
-    return y
+    return y_encoded
+
+#X = data_normalization(feature)
+#y = target_encoding(target)
+#test_X = data_normalization(test_feature)
+#test_y = target_encoding(test_target)
+
 
 def over_sampling(X, y):
     #oversampling the minority class in y
