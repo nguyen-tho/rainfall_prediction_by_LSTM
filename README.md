@@ -23,3 +23,6 @@ Label Key  |  Range of value|
 -----------------------------
 
 ```
+
+The purpose of this project is an ordinal classification problem because each label key has a range of increasing ordinal values
+
