@@ -30,11 +30,10 @@ def scatter_3D_plot(data, group, col1, col2, col3, title):
     
 
 def show_correlation_matrix(data):
-    corr_maxtrix = data.corr()
-    
-    plt.figure(10,10)
+    #data is correlation matrix
+    plt.figure(figsize=(10,10))
     plt.title("Correlation Matrix")
-    sns.heatmap(corr_maxtrix, annot=True, cmap='coolwarm', square=True)
+    sns.heatmap(data, annot=True, cmap='coolwarm', square=True)
     plt.xticks(rotation=45)
     plt.yticks(rotation=45)
     
