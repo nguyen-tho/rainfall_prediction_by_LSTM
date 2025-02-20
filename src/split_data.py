@@ -12,12 +12,12 @@ def split_data(X, Y, split_ratio=0.2, shuffle=False, random_state=42):
 
 def split_data_3_parts(X, Y, train_test_ratio=(0.6, 0.2), shuffle=False, random_state=42):
     # train_val_ratio is a tuple to seperate data into 3 parts train, val and test
-    train_ratio, test_ratio = train_test_ratio
-    X_train_val, X_test, Y_train_val, Y_test = split_data(X, Y, test_ratio)
+    (train_ratio, test_ratio) = train_test_ratio
+    X_train_val, X_test, Y_train_val, Y_test = split_data(X, Y, test_ratio, random_state=random_state)
     
     #The remaining part is validation set
     remaining = test_ratio/(train_ratio + test_ratio)
-    X_train, X_val, Y_train, Y_val = split_data(X_train_val, Y_train_val, split_ratio=remaining)
+    X_train, X_val, Y_train, Y_val = split_data(X_train_val, Y_train_val, split_ratio=remaining, random_state=random_state)
     
     return X_train, X_val, X_test, Y_train, Y_val, Y_test
     
