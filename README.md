@@ -6,7 +6,7 @@ In this project we seperate original data based on daily period into 7 ranges to
 Table of label key
 
 |Label Key  | Range of value |
-|----------------------------|
+| ------------- | ------------- |
 |0          | 0              |
 |1          |(0,0.3]         |
 |2          |(0.3,3]         |
