@@ -38,7 +38,7 @@ This project has some problems need to solve:
   - Overlapping data
   - Overfitting classification model
 
-  - See my experiments [click here][https://github.com/nguyen-tho/rainfall_prediction_by_LSTM/blob/main/Ordinal_Classification_with_SVMSMOTE_and_LSTM.ipynb]
+  - See my experiments [!click here](https://github.com/nguyen-tho/rainfall_prediction_by_LSTM/blob/main/Ordinal_Classification_with_SVMSMOTE_and_LSTM.ipynb)
 
 
 
