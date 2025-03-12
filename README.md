@@ -18,6 +18,23 @@ Table of label key
 
 This project has some problems need to solve:
   - Imbalanced data
+    - To improve imbalanced data we need to use oversampling techniques such as SMOTE, ADASYN, SVM SMOTE,...
+    - In this poject we use SVM SMOTE to oversample data
+      ```sh
+      from imblearn.oversampling import SVMSMOTE
+      from collections import Counter
+      import numpy as np
+
+      def svm_smote(X, Y, random_state):
+        #minority class count is optional but we need class count to ensure dataset is not missing any classes
+        minority_class_counts = [count for _, count in Counter(np.argmax(Y, axis=1)).items() if count <= 5]
+        k_neighbors_val = min(5, min(minority_class_counts) - 1) if minority_class_counts else 1
+        #SVM SMOTE processing
+        svmsm = SVMSMOTE(random_state=random_state, k_neighbors=k_neighbors_val)
+        X_res, Y_res = svmsm.fit_resample(X, Y)
+    
+        return X_res, Y_res
+      ```
   - Overlapping data
   - Overfitting classification model
 
