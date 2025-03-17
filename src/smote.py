@@ -23,7 +23,7 @@ def adasyn(X, Y, random_state):
 def svm_smote(X, Y, random_state):
     minority_class_counts = [count for _, count in Counter(np.argmax(Y, axis=1)).items() if count <= 5]
     k_neighbors_val = min(5, min(minority_class_counts) - 1) if minority_class_counts else 1
-    svmsm = SMOTE(random_state=random_state, k_neighbors=k_neighbors_val)
+    svmsm = SVMSMOTE(random_state=random_state, k_neighbors=k_neighbors_val)
     X_res, Y_res = svmsm.fit_resample(X, Y)
     
     return X_res, Y_res
